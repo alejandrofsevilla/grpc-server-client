@@ -1,0 +1,15 @@
+#ifndef GRPC_GRPC_SERVER_IMPL
+#define GRPC_GRPC_SERVER_IMPL
+
+template <class Service, class Call, class Reply>
+void GrpcServer::requestCallFromService(
+    Service &service,
+    const typename GrpcServerCallData<Service, Call, Reply>::CallRequest
+        &request,
+    const typename GrpcServerCallData<Service, Call, Reply>::CallHandler
+        &handler) {
+  GrpcServerCallData<Service, Call, Reply>::create(service, request, handler,
+                                                   m_completionQueue.get());
+}
+
+#endif

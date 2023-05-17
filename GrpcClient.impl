@@ -1,0 +1,38 @@
+#ifndef GRPC_CLIENT_IMPL
+#define GRPC_CLIENT_IMPL
+
+#include <grpcpp/grpcpp.h>
+
+#include <iostream>
+#include <memory>
+
+template <class Service>
+GrpcClient<Service>::GrpcClient(std::shared_ptr<grpc::Channel> channel)
+    : m_stub{Service::NewStub(channel)} {}
+
+template <class Service>
+template <class Call, class Reply>
+void GrpcClient<Service>::makeCall(
+    const Call &call,
+    const typename GrpcClientCallData<typename Service::Stub, Call,
+                                      Reply>::CallPreparer &callPreparer,
+    const typename GrpcClientCallData<typename Service::Stub, Call,
+                                      Reply>::ReplyHandler &replyHandler) {
+  GrpcClientCallData<typename Service::Stub, Call, Reply>::create(
+      *m_stub.get(), call, callPreparer, replyHandler, &m_completionQueue);
+}
+
+template <class Service>
+void GrpcClient<Service>::startHandlingReplies() {
+  void *tag;
+  bool ok = false;
+  while (m_completionQueue.Next(&tag, &ok)) {
+    if (!ok) {
+      std::cerr << "Error found while handling reply" << std::endl;
+    }
+    auto callData{static_cast<GrpcClientCallDataBase *>(tag)};
+    callData->finish();
+  }
+}
+
+#endif

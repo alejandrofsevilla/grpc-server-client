@@ -1,0 +1,44 @@
+#ifndef GRPC_CLIENT_CALL_DATA_IMPL
+#define GRPC_CLIENT_CALL_DATA_IMPL
+
+#include <iostream>
+
+template <class Stub, class Call, class Reply>
+GrpcClientCallData<Stub, Call, Reply>::GrpcClientCallData(
+    Stub &stub, const Call &call,
+    const typename GrpcClientCallData<Stub, Call, Reply>::CallPreparer
+        &callPreparer,
+    const typename GrpcClientCallData<Stub, Call, Reply>::ReplyHandler
+        &replyHandler,
+    grpc::CompletionQueue *completionQueue)
+    : m_replyHandler{replyHandler},
+      m_reply{},
+      m_self{},
+      m_responseReader{},
+      m_clientContext{},
+      m_status{} {
+  m_responseReader =
+      std::invoke(callPreparer, stub, &m_clientContext, call, completionQueue);
+  m_responseReader->StartCall();
+  m_responseReader->Finish(&m_reply, &m_status, this);
+}
+
+template <class Stub, class Call, class Reply>
+void GrpcClientCallData<Stub, Call, Reply>::create(
+    Stub &stub, const Call &call, const CallPreparer &callPreparer,
+    const ReplyHandler &replyHandler, grpc::CompletionQueue *completionQueue) {
+  auto instance{std::unique_ptr<GrpcClientCallData>(new GrpcClientCallData{
+      stub, call, callPreparer, replyHandler, completionQueue})};
+  instance->m_self = std::move(instance);
+}
+
+template <class Stub, class Call, class Reply>
+void GrpcClientCallData<Stub, Call, Reply>::finish() {
+  if (!m_status.ok()) {
+    std::cerr << "Call Error found: " << m_status.error_message() << std::endl;
+  }
+  std::invoke(m_replyHandler, m_reply);
+  m_self.reset();
+}
+
+#endif

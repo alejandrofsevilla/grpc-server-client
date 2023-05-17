@@ -1,0 +1,4 @@
+*.cache
+*.pb.*
+*build
+*.clang-format
