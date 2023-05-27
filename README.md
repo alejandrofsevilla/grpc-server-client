@@ -1,6 +1,6 @@
 # GRPC Server and Client
 Asynchronous [gRPC](https://grpc.io) Server and Client based on the [HelloWorld example](https://github.com/grpc/grpc/blob/v1.53.1/examples/cpp/helloworld), adapted to handle [unary RPCs](https://grpc.io/docs/what-is-grpc/core-concepts/#unary-rpc) from any type of Protobuf Service. <br><br>
-gRPC is built as part of the project using CMake FetchContent as described [here](https://github.com/grpc/grpc/blob/v1.53.0/src/cpp/README.md#fetchcontent).
+gRPC is cloned and built as part of the project using CMake FetchContent.
 
 ## Requirements
 - C++17
