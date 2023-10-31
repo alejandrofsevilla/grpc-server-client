@@ -1,11 +1,12 @@
+# ![LinuxWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)
 # GRPC Server and Client
 Asynchronous [gRPC](https://grpc.io) Server and Client based on the [HelloWorld example](https://github.com/grpc/grpc/blob/v1.53.1/examples/cpp/helloworld), adapted to handle [unary RPCs](https://grpc.io/docs/what-is-grpc/core-concepts/#unary-rpc) from any type of Protobuf Service. <br><br>
 gRPC is cloned and built as part of the project using CMake FetchContent.
 
 ## Requirements
-- C++17
-- CMake 3.22.0
-- gRPC 1.53.1
+- C++17 compiler.
+- CMake 3.22.0.
+- gRPC 1.53.1 requirements.
 
 ## Example
 ### Protobuf Service
