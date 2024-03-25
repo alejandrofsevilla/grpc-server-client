@@ -1,6 +1,6 @@
 # ![LinuxWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)
 # GRPC Server and Client
-Asynchronous [gRPC](https://grpc.io) Server and Client that handles [unary RPCs](https://grpc.io/docs/what-is-grpc/core-concepts/#unary-rpc) from any type of Protobuf Service.
+Asynchronous [gRPC](https://grpc.io) Server and Client generic proxy classes that use templates to be agnostic of the type of protobuf service.
 
 ## Requirements
 - C++17 compiler.
