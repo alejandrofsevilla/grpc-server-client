@@ -1,6 +1,6 @@
 # ![LinuxWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)
 # GRPC Server and Client
-Generic [gRPC](https://grpc.io) asynchronous Server and Client using templates to abstract classes from the type of Proto Service.
+Generic [gRPC](https://grpc.io) Server and Client using templates to abstract classes from the type of Proto Service.
 
 ## Requirements
 - C++17 compiler.
