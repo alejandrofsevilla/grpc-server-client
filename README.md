@@ -7,7 +7,7 @@ Generic [gRPC](https://grpc.io) Server and Client example.
 - CMake 3.22.0.
 - gRPC 1.53.1 requirements.
 
-## Example
+## Usage
 ### Protobuf Service
 ```protobuf
 syntax = "proto3";
