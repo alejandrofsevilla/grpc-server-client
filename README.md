@@ -31,8 +31,6 @@ message SimpleReply {
 
 #include "SimpleService.grpc.pb.h"
 
-//...
-
 GrpcServer server;
 server.addListeningPort("127.0.0.1:8800", grpc::InsecureServerCredentials());
 SimpleService::AsyncService service;
@@ -46,7 +44,6 @@ server.requestCallFromService<SimpleService::AsyncService, SimpleRequest,
     });
 server.startHandlingCalls();
 
-//...
 ```
 ### Client
 ```c++
@@ -55,8 +52,6 @@ server.startHandlingCalls();
 #include <thread>
 
 #include "SimpleService.grpc.pb.h"
-
-//...
 
 GrpcClient<SimpleService> client{grpc::CreateChannel(
     "127.0.0.1:8800", grpc::InsecureChannelCredentials())};
@@ -72,5 +67,4 @@ while (true) {
       [](const auto& reply) { std::cout << reply.message() << std::endl; });
 }
 
-//...
 ```
