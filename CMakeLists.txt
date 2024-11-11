@@ -25,7 +25,6 @@ add_library(${PROJECT_NAME} SHARED
   GrpcServer.impl
   )
 
-add_subdirectory(examples)
 add_subdirectory(tests)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
