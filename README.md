@@ -6,6 +6,7 @@ Generic unary asynchronous [gRPC](https://grpc.io) Server and Client example.
 - C++17 compiler.
 - CMake 3.22.0.
 - gRPC 1.53.1 requirements.
+- GoogleTest.
 
 ## Usage
 ### Protobuf Service
