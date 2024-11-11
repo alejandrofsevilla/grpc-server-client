@@ -7,9 +7,8 @@
 
 #include "GrpcClientCallData.hpp"
 
-template <class Service>
-class GrpcClient {
- public:
+template <class Service> class GrpcClient {
+public:
   explicit GrpcClient(std::shared_ptr<grpc::Channel> channel);
 
   template <class Call, class Reply>
@@ -21,10 +20,12 @@ class GrpcClient {
                                         Reply>::ReplyHandler &replyHandler);
 
   void startHandlingReplies();
+  void shutDown();
 
- private:
+private:
   std::unique_ptr<typename Service::Stub> m_stub;
   grpc::CompletionQueue m_completionQueue;
+  bool m_shuttingDown;
 };
 
 #include "GrpcClient.impl"

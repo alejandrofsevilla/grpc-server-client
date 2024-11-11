@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.22.0)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 project(grpc-server-client LANGUAGES CXX)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+add_subdirectory(examples)
+add_subdirectory(tests)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -13,9 +16,7 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-add_subdirectory(examples)
-
-add_library(grpc-server-client SHARED
+add_library(${PROJECT_NAME} SHARED
   GrpcClientCallData.hpp
   GrpcClientCallData.impl
   GrpcServerCallData.hpp
@@ -27,6 +28,6 @@ add_library(grpc-server-client SHARED
   GrpcServer.impl
   )
 
-target_compile_features(grpc-server-client PRIVATE cxx_std_17)
-target_compile_options(grpc-server-client PRIVATE -Wall -Wextra -Wpedantic -Werror -O0)
-target_link_libraries(grpc-server-client grpc++)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror -O0)
+target_link_libraries(${PROJECT_NAME} grpc++)

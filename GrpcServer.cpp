@@ -3,9 +3,8 @@
 #include <iostream>
 
 GrpcServer::GrpcServer()
-    : m_builder{},
-      m_completionQueue{m_builder.AddCompletionQueue()},
-      m_server{} {}
+    : m_builder{}, m_completionQueue{m_builder.AddCompletionQueue()},
+      m_server{}, m_shuttingDown{false} {}
 
 GrpcServer::~GrpcServer() {
   if (m_server) {
@@ -29,11 +28,18 @@ void GrpcServer::buildAndStart() { m_server = m_builder.BuildAndStart(); }
 void GrpcServer::startHandlingCalls() {
   void *tag;
   bool ok;
-  while (true) {
+  while (!m_shuttingDown) {
     m_completionQueue->Next(&tag, &ok);
     if (!ok) {
       std::cerr << "Error found while handling call" << std::endl;
+    } else {
+      static_cast<GrpcServerCallDataBase *>(tag)->proceed();
     }
-    static_cast<GrpcServerCallDataBase *>(tag)->proceed();
   }
+}
+
+void GrpcServer::shutDown() {
+  m_server->Shutdown();
+  m_completionQueue->Shutdown();
+  m_shuttingDown = true;
 }

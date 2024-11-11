@@ -11,12 +11,8 @@ GrpcClientCallData<Stub, Call, Reply>::GrpcClientCallData(
     const typename GrpcClientCallData<Stub, Call, Reply>::ReplyHandler
         &replyHandler,
     grpc::CompletionQueue *completionQueue)
-    : m_replyHandler{replyHandler},
-      m_reply{},
-      m_self{},
-      m_responseReader{},
-      m_clientContext{},
-      m_status{} {
+    : m_reply{}, m_replyHandler{replyHandler}, m_self{}, m_responseReader{},
+      m_clientContext{}, m_status{} {
   m_responseReader =
       std::invoke(callPreparer, stub, &m_clientContext, call, completionQueue);
   m_responseReader->StartCall();

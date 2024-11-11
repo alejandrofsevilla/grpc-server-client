@@ -7,13 +7,13 @@
 #include <memory>
 
 class GrpcServerCallDataBase {
- public:
+public:
   virtual void proceed() = 0;
 };
 
 template <class Service, class Call, class Reply>
 class GrpcServerCallData final : public GrpcServerCallDataBase {
- public:
+public:
   using CallRequest = std::function<void(
       Service &, grpc::ServerContext *, Call *,
       grpc::ServerAsyncResponseWriter<Reply> *, grpc::CompletionQueue *,
@@ -26,15 +26,15 @@ class GrpcServerCallData final : public GrpcServerCallDataBase {
 
   void proceed();
 
- private:
+private:
   enum class Status { Create, Process, Finish };
 
   GrpcServerCallData(Service &service, const CallRequest &request,
                      const CallHandler &handler,
                      grpc::ServerCompletionQueue *completionQueue);
 
-  const CallRequest &m_request;
-  const CallHandler &m_handler;
+  CallRequest m_request;
+  CallHandler m_handler;
   Service &m_service;
   Call m_call;
   Reply m_reply;
