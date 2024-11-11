@@ -18,39 +18,32 @@ GrpcServerCallData<Service, Call, Reply>::GrpcServerCallData(
     const GrpcServerCallData<Service, Call, Reply>::CallRequest &request,
     const GrpcServerCallData<Service, Call, Reply>::CallHandler &handler,
     grpc::ServerCompletionQueue *completionQueue)
-    : m_request{request},
-      m_handler{handler},
-      m_service{service},
-      m_call{},
-      m_reply{},
-      m_status{Status::Create},
-      m_self{},
-      m_serverContext{},
-      m_responder{&m_serverContext},
-      m_completionQueue{completionQueue} {
+    : m_request{request}, m_handler{handler}, m_service{service}, m_call{},
+      m_reply{}, m_status{Status::Create}, m_self{}, m_serverContext{},
+      m_responder{&m_serverContext}, m_completionQueue{completionQueue} {
   proceed();
 }
 
 template <class Service, class Call, class Reply>
 void GrpcServerCallData<Service, Call, Reply>::proceed() {
   switch (m_status) {
-    case Status::Create:
-      std::invoke(m_request, m_service, &m_serverContext, &m_call, &m_responder,
-                  m_completionQueue, m_completionQueue, this);
-      m_status = Status::Process;
-      return;
-    case Status::Process: {
-      create(m_service, m_request, m_handler, m_completionQueue);
-      std::invoke(m_handler, m_call, m_reply);
-      m_responder.Finish(m_reply, grpc::Status::OK, this);
-      m_status = Status::Finish;
-      return;
-    }
-    case Status::Finish:
-      m_self.reset();
-      return;
-    default:
-      return;
+  case Status::Create:
+    std::invoke(m_request, m_service, &m_serverContext, &m_call, &m_responder,
+                m_completionQueue, m_completionQueue, this);
+    m_status = Status::Process;
+    return;
+  case Status::Process: {
+    create(m_service, m_request, m_handler, m_completionQueue);
+    std::invoke(m_handler, m_call, m_reply);
+    m_responder.Finish(m_reply, grpc::Status::OK, this);
+    m_status = Status::Finish;
+    return;
+  }
+  case Status::Finish:
+    m_self.reset();
+    return;
+  default:
+    return;
   }
 }
 

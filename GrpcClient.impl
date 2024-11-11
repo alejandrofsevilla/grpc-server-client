@@ -1,6 +1,7 @@
 #ifndef GRPC_CLIENT_IMPL
 #define GRPC_CLIENT_IMPL
 
+#include "grpcpp/completion_queue.h"
 #include <grpcpp/grpcpp.h>
 
 #include <iostream>
@@ -8,7 +9,8 @@
 
 template <class Service>
 GrpcClient<Service>::GrpcClient(std::shared_ptr<grpc::Channel> channel)
-    : m_stub{Service::NewStub(channel)} {}
+    : m_stub{Service::NewStub(channel)}, m_completionQueue{}, m_shuttingDown{
+                                                                  false} {}
 
 template <class Service>
 template <class Call, class Reply>
@@ -22,17 +24,21 @@ void GrpcClient<Service>::makeCall(
       *m_stub.get(), call, callPreparer, replyHandler, &m_completionQueue);
 }
 
-template <class Service>
-void GrpcClient<Service>::startHandlingReplies() {
+template <class Service> void GrpcClient<Service>::startHandlingReplies() {
   void *tag;
   bool ok = false;
-  while (m_completionQueue.Next(&tag, &ok)) {
+  while (m_completionQueue.Next(&tag, &ok) && !m_shuttingDown) {
     if (!ok) {
       std::cerr << "Error found while handling reply" << std::endl;
+    } else {
+      static_cast<GrpcClientCallDataBase *>(tag)->finish();
     }
-    auto callData{static_cast<GrpcClientCallDataBase *>(tag)};
-    callData->finish();
   }
+}
+
+template <class Service> void GrpcClient<Service>::shutDown() {
+  m_completionQueue.Shutdown();
+  m_shuttingDown = true;
 }
 
 #endif

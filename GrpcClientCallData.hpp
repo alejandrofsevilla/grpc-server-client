@@ -6,13 +6,13 @@
 #include <memory>
 
 class GrpcClientCallDataBase {
- public:
+public:
   virtual void finish() = 0;
 };
 
 template <class Stub, class Call, class Reply>
 class GrpcClientCallData final : public GrpcClientCallDataBase {
- public:
+public:
   using CallPreparer =
       std::function<std::unique_ptr<grpc::ClientAsyncResponseReader<Reply>>(
           Stub &, grpc::ClientContext *, const Call &,
@@ -26,15 +26,14 @@ class GrpcClientCallData final : public GrpcClientCallDataBase {
 
   void finish();
 
- private:
+private:
   GrpcClientCallData(Stub &stub, const Call &call,
                      const CallPreparer &callPreparer,
                      const ReplyHandler &replyHandler,
                      grpc::CompletionQueue *completionQueue);
 
-  const ReplyHandler &m_replyHandler;
-
   Reply m_reply;
+  ReplyHandler m_replyHandler;
   std::unique_ptr<GrpcClientCallData> m_self;
   std::unique_ptr<grpc::ClientAsyncResponseReader<Reply>> m_responseReader;
   grpc::ClientContext m_clientContext;
