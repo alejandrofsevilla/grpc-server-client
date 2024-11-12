@@ -1,6 +1,6 @@
 # ![LinuxWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)
 # GRPC Server and Client
-Generic unary asynchronous [gRPC](https://grpc.io) Server and Client example.
+Unary asynchronous [gRPC](https://grpc.io) Server and Client example.
 
 ## Requirements
 - C++17 compiler.
