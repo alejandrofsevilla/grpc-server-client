@@ -9,7 +9,7 @@ C++ implementation of unary async [gRPC](https://grpc.io) Server and Client.
 - GoogleTest.
 
 ## Usage
-### Protobuf Service
+### Simple protoservice example
 ```protobuf
 syntax = "proto3";
 
