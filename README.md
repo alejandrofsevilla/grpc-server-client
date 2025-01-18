@@ -1,4 +1,4 @@
-# [![LinuxWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml)
+# [![LinuxBuildWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml/badge.svg)](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/Linux.yml) [![TestsWorkflow](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/LinuxBuildAndTest.yml/badge.svg)](https://github.com/alejandrofsevilla/grpc-server-client/actions/workflows/LinuxBuildAndTest.yml)
 # GRPC Server and Client
 C++ implementation of unary async [gRPC](https://grpc.io) Server and Client.
 
